@@ -21,7 +21,7 @@ function default_1(options) {
             throw new schematics_1.SchematicsException('Option (project) is required.');
         }
         if (options.root) {
-            options.rootStatePath = utils_1.findFileToModifyFromOptions(host, options, "state", "root")
+            options.rootStatePath = utils_1.findFileToModifyFromOptions(host, options, "state", "root");
         }
 
         const parsedPath = parse_name_1.parseName(options.path, options.name);
