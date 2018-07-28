@@ -1,0 +1,13 @@
+Make sure search for root is working optimally
+tests
+!! indentation for reducers
+!! Add action to module not working when run using script
+!! add state fields to schematic
+!! add other states to state file
+!! add create resource in directory option
+!! create common actions which is inherited by all other actions
+! Fix path imports (do not merge if begins with '/')
+! add store to paths in config
+! Add action to component option
+future:
+create state based of returned API data

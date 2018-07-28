@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsReduxState",
+  "title": "Angular Component Redux State Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path to create the component.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "spec": {
+      "type": "boolean",
+      "description": "Specifies if a spec file is generated.",
+      "default": true
+    },
+    "root":  {
+      "type": "string",
+      "description": "Allows specification of the declaring root state.",
+      "alias": "r"
+    },
+    "appendRoot": {
+      "type": "boolean",
+      "description": "Boolean describing whether to append the root name to the state name.",
+      "alias": "m",
+      "default": false
+    }
+  },
+  "required": []
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsReduxReducer",
+  "title": "Angular Redux Reduxer Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path to create the component.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "spec": {
+      "type": "boolean",
+      "description": "Specifies if a spec file is generated.",
+      "default": true
+    },
+    "root":  {
+      "type": "string",
+      "description": "Allows specification of the declaring root reducer.",
+      "alias": "r"
+    },
+    "appendRoot": {
+      "type": "boolean",
+      "description": "Boolean describing whether to append the root name to the reducer name.",
+      "alias": "a",
+      "default": false
+    },
+    "store": {
+      "type": "boolean",
+      "description": "Whether resource belongs in the store",
+      "alias": "s",
+      "default": false
+    }
+  },
+  "required": []
+}
