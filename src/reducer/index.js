@@ -20,7 +20,6 @@ const utils_1 = require("../utils/module-utils")
 
 function default_1(options) {
     return (host, context) => {
-        console.log("LOUIS")
         if (!options.project) {
             throw new schematics_1.SchematicsException('Option (project) is required.');
         }

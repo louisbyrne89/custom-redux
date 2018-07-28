@@ -146,7 +146,7 @@ function findFileToModifyFromOptions(host, options, typeString, key) {
         return core_1.normalize(fileToModifyPath + '/' + fileToModifyBaseName + `.${typeString}.ts`);
     }
     else {
-        const filePath = searchAllDirectories(host, "/src/app/", fileToModifyBaseName + `.${typeString}.ts`)
+        const filePath = searchAllDirectories(host, "/src/app", fileToModifyBaseName + `.${typeString}.ts`)
         if (filePath !== undefined) {
             return core_1.normalize(filePath + "/" + fileToModifyBaseName + `.${typeString}.ts`);
         } else {
@@ -164,13 +164,21 @@ function searchAllDirectories(host, path, targetFile) {
 
 function recursiveDirectorySearch(directories, host, targetFile, path) {
     let filePath;
-    directories.forEach(directory => {
-        const fileExists = checkFiles(host.getDir(path + directory).subfiles, targetFile);
+    for (let idx = 0; idx < directories.length; idx++) {
+        const directory = directories[idx]
+        let tempPath = path + '/' + directory;
+        // console.log(tempPath)
+        const fileExists = checkFiles(host.getDir(tempPath).subfiles, targetFile);
         if (fileExists == true) {
-            return path + directory;
+            return tempPath
+        } else if(host.getDir(tempPath).subdirs.length > 0 && filePath === undefined) {
+            filePath = recursiveDirectorySearch(host.getDir(tempPath).subdirs, host, targetFile, tempPath);
         }
-    });
-    recursiveDirectorySearch(host.getDir(path).subdirs, host, targetFile, path);
+    }
+    if (filePath !== undefined) {
+      return filePath
+    }
+    
 }
 
 function checkFiles(files, targetFile) {
