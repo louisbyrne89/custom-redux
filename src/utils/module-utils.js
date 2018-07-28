@@ -29,7 +29,7 @@ function addProviderToNgModule(options, type) {
             + core_1.strings.dasherize(options.name)
             + '.'
             + type;
-        const typeName = core_1.strings.capitalize(type)
+        const typeName = core_1.strings.capitalize(type);
         const relativePath = find_module_1.buildRelativePath(modulePath, componentPath);
         const classifiedName = core_1.strings.classify(`${options.name}${typeName}`);
         const declarationChanges = ast_utils_1.addProviderToModule(source, modulePath, classifiedName, relativePath);
@@ -43,7 +43,7 @@ function addProviderToNgModule(options, type) {
         return host;
     };
 }
-exports.addProviderToNgModule = addProviderToNgModule
+exports.addProviderToNgModule = addProviderToNgModule;
 
 function insertChanges(declarationRecorder, changes) {
     for (const change of changes) {
@@ -56,19 +56,19 @@ function insertChanges(declarationRecorder, changes) {
 exports.insertChanges = insertChanges
 
 function addImport(source, rootPath, reducerClassifiedName, reducerPath) {
-    let lastImport
-    const importString = `\nimport { ${reducerClassifiedName} } from '${reducerPath}';`
+    let lastImport;
+    const importString = `\nimport { ${reducerClassifiedName} } from '${reducerPath}';`;
     // Loop
     const nodes = ast_utils_1.getSourceNodes(source)
     .filter(node => {
-        return node.kind == ts.SyntaxKind.ImportDeclaration
+        return node.kind == ts.SyntaxKind.ImportDeclaration;
     })
     .map(imp => lastImport = imp)
-    let position = lastImport.getEnd()
-    return [new change_1.InsertChange(rootPath, position, importString)]
+    let position = lastImport.getEnd();
+    return [new change_1.InsertChange(rootPath, position, importString)];
 }
 
-exports.addImport = addImport
+exports.addImport = addImport;
 
 function addToRoot(options, rootDir, typeString, callback, formatImport) {
     return (host) => {
@@ -76,7 +76,7 @@ function addToRoot(options, rootDir, typeString, callback, formatImport) {
         if (!options[rootDir]) {
             return host;
         }
-        let rootPath = options[rootDir]
+        let rootPath = options[rootDir];
         // read root reducer text.
         const text = host.read(rootPath);
         if (text === null) {
@@ -86,29 +86,29 @@ function addToRoot(options, rootDir, typeString, callback, formatImport) {
         // create new source file
         const source = ts.createSourceFile(rootPath, sourceText, ts.ScriptTarget.Latest, true);
         // create path to reducer file and reformat reducer name
-        const splitPath = options.path.split('/')
+        const splitPath = options.path.split('/');
         const filePath = '@app/'
-            + splitPath.slice(3, splitPath.length).join('/') 
+            + splitPath.slice(3, splitPath.length).join('/')
             + '/'
             + core_1.strings.dasherize(options.name)
             + '.'
             + `${typeString}`;
-        let classifiedName
+        let classifiedName;
         if (options.appendRoot === true) {
             classifiedName = core_1.strings.classify(`${options.name}-${options.root}-${typeString}`);
         } else {
             classifiedName = core_1.strings.classify(`${options.name}-${typeString}`);
         }   
         // Add root inserts
-        const changes = callback(options, source, rootPath, options.name, classifiedName)
+        const changes = callback(options, source, rootPath, options.name, classifiedName);
         //
-        const importString = formatImport(classifiedName)
+        const importString = formatImport(classifiedName);
         // Add insert change for imports
-        const newImport = addImport(source, rootPath, importString, filePath)
+        const newImport = addImport(source, rootPath, importString, filePath);
         // insert changes
         let declarationRecorder = host.beginUpdate(rootPath);
-        declarationRecorder = insertChanges(declarationRecorder, changes)
-        declarationRecorder = insertChanges(declarationRecorder, newImport)
+        declarationRecorder = insertChanges(declarationRecorder, changes);
+        declarationRecorder = insertChanges(declarationRecorder, newImport);
         host.commitUpdate(declarationRecorder);
         return host;
     }
@@ -121,7 +121,7 @@ function formatImportReducer(classifiedName) {
 exports.formatImportReducer = formatImportReducer;
 
 function formatImportState(classifiedName) {
-  return "I" + classifiedName + "Record, " + classifiedName + "Factory"
+  return "I" + classifiedName + "Record, " + classifiedName + "Factory";
 }
 exports.formatImportState = formatImportState;
 
@@ -157,35 +157,35 @@ function findFileToModifyFromOptions(host, options, typeString, key) {
 exports.findFileToModifyFromOptions = findFileToModifyFromOptions;
 
 function searchAllDirectories(host, path, targetFile) {
-    const directories = host.getDir(path).subdirs
-    const filePath = recursiveDirectorySearch(directories, host, targetFile, path)
-    return filePath
+    const directories = host.getDir(path).subdirs;
+    const filePath = recursiveDirectorySearch(directories, host, targetFile, path);
+    return filePath;
 }
 
 function recursiveDirectorySearch(directories, host, targetFile, path) {
-    let filePath
+    let filePath;
     directories.forEach(directory => {
-        const fileExists = checkFiles(host.getDir(path + directory).subfiles, targetFile)
+        const fileExists = checkFiles(host.getDir(path + directory).subfiles, targetFile);
         if (fileExists == true) {
-            return path + directory
+            return path + directory;
         }
-    })
-    recursiveDirectorySearch(host.getDir(path).subdirs, host, targetFile, path)
+    });
+    recursiveDirectorySearch(host.getDir(path).subdirs, host, targetFile, path);
 }
 
 function checkFiles(files, targetFile) {
-    let fileExists = false
+    let fileExists = false;
     files.forEach(file => {
         if (file === targetFile) {
-            fileExists = true
+            fileExists = true;
         }
     })
-    return fileExists
+    return fileExists;
 }
 
 function addReducerToCombinedReducers(options, source, rootPath, reducerName, reducerClassifiedName) {
-    let lastReducer
-    let reducerString = `\n  ${core_1.strings.camelize(reducerName)}: ${reducerClassifiedName},`
+    let lastReducer;
+    let reducerString = `\n  ${core_1.strings.camelize(reducerName)}: ${reducerClassifiedName},`;
 
     // get file nodes and filter for the definition of the root reducer
     const nodes = ast_utils_1.getSourceNodes(source)
@@ -197,54 +197,54 @@ function addReducerToCombinedReducers(options, source, rootPath, reducerName, re
     nodes.map(node => {
         let props
         if (node.arguments[0].properties !== undefined) {
-            props = node.arguments[0].properties
+            props = node.arguments[0].properties;
         } else {
-            props = node.arguments[0].arguments[0].properties
+            props = node.arguments[0].arguments[0].properties;
         }
         // loop through reducers defined in the root reducer and set last one as lastReducer
         props.forEach(property => {
-            lastReducer = property
+            lastReducer = property;
         })
     })
     let position
     // If root reducer is not empty
     if (lastReducer !== undefined) {
         // get end of node position
-        position = lastReducer.getEnd()
+        position = lastReducer.getEnd();
         // if trailing comma exists, add 1 to last position. Othewise add comma before new reducer is added to file.
         if (lastReducer.parent.properties.hasTrailingComma) {
-            position += 1
+            position += 1;
         } 
         else {
-            reducerString = ',' + reducerString
+            reducerString = ',' + reducerString;
         }
     } else {
-        position = nodes[0].getEnd() - 3
+        position = nodes[0].getEnd() - 3;
     }
     // return inserted reducer as array
-    return [new change_1.InsertChange(rootPath, position, reducerString)]
+    return [new change_1.InsertChange(rootPath, position, reducerString)];
 }
 exports.addReducerToCombinedReducers = addReducerToCombinedReducers;
 
 function addStateToRootState(options, source, rootPath, stateName, stateClassifiedName) {
-    let interfaceEnd
-    let stateEnd
-    let tempString
-    let interfaceString = `\n  ${core_1.strings.camelize(stateName)}: I${stateClassifiedName}Record;`
-    let stateString = `\n  ${core_1.strings.camelize(stateName)}: ${stateClassifiedName}Factory(),`
+    let interfaceEnd;
+    let stateEnd;
+    let tempString;
+    let interfaceString = `\n  ${core_1.strings.camelize(stateName)}: I${stateClassifiedName}Record;`;
+    let stateString = `\n  ${core_1.strings.camelize(stateName)}: ${stateClassifiedName}Factory(),`;
 
-    let rootName = rootPath.split("/")
-    rootName = core_1.strings.classify(rootName[rootName.length-1].split('.')[0])
+    let rootName = rootPath.split("/");
+    rootName = core_1.strings.classify(rootName[rootName.length-1].split('.')[0]);
     // get file nodes and filter for the definition of the root state
     const nodes = ast_utils_1.getSourceNodes(source)
     .forEach(node => {
         if (node.kind === ts.SyntaxKind.InterfaceDeclaration && 
            (node.name.escapedText === `I${rootName}State` || node.name.escapedText === "IAppState" )) {
             if (node.members.length === 0) {
-                interfaceEnd = node.end - 2
+                interfaceEnd = node.end - 2;
             } else {
                 node.members.forEach(member => {
-                    interfaceEnd = member.getEnd()
+                    interfaceEnd = member.getEnd();
                 })
             }
         }
@@ -252,29 +252,29 @@ function addStateToRootState(options, source, rootPath, stateName, stateClassifi
          (node.name.escapedText === `${rootName}` || node.name.escapedText === "INITIAL_APP_STATE" ))
             {
             if (node.initializer.properties.length === 0) {
-                stateEnd = node.end - 2
+                stateEnd = node.end - 2;
             } else {
                 node.initializer.properties.forEach(property => {
                     if (property.parent.properties.hasTrailingComma) {
-                        stateEnd = property.getEnd() +1
+                        stateEnd = property.getEnd() +1;
                     } else {
-                        tempString = ',' + stateString
-                        stateEnd = property.getEnd()
+                        tempString = ',' + stateString;
+                        stateEnd = property.getEnd();
                     }
                 })
             }
         }
     })
     if (tempString !== undefined) {
-        stateString = tempString
+        stateString = tempString;
     }
     // return inserted state as array
     // Error logging
     if (stateEnd === undefined) {
-        console.log("Error generating state. Cannot state position")
+        console.log("Error generating state. Cannot state position");
     }
     if (interfaceEnd === undefined) {
-        console.log("Error generating state. Cannot interface position")
+        console.log("Error generating state. Cannot interface position");
     }
 
     return [
